@@ -15,4 +15,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "sleep 5 && (alembic upgrade head || (echo 'Миграции не применены, создаем таблицы через create_tables' && python -c \"from app.database.database import create_tables; import asyncio; asyncio.run(create_tables())\")) && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]
+CMD ["sh", "-c", "sleep 5 && (alembic upgrade head || (echo 'Migrations are not applied, creating tables via create_tables' && python -c \"from app.database.database import create_tables; import asyncio; asyncio.run(create_tables())\")) && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]

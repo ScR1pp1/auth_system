@@ -9,15 +9,21 @@ from app.schemas.schemas import UserShow, UserOwnUpdate, UserManagerShow, UserUp
 from app.services.UserService import UserService
 from app.services.dependencies import get_current_user, get_current_manager, get_current_admin
 from app.services.helpers import verify_password, logout_with_cookie
+from app.test_data import create_test_users
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
-        print("All tables successfully created/checked via lifespan")
+        print("All tables are created/checked via lifespan")
     except Exception as e:
-        print(f"Error creating tables: {e}")
+        print(f"Error while creating tables: {e}")
+
+    try:
+        await create_test_users()
+    except Exception as e:
+        print(f"Error while creating test data: {e}")
     yield
 
 app = FastAPI(lifespan=lifespan)
